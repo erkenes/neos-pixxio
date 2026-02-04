@@ -138,7 +138,7 @@ final class PixxioClient
      * @throws ConnectionException
      * @throws \JsonException
      */
-    public function search(string $queryExpression, string $formatType, array $fileTypes, int $directoryFilter = null, string $pageCursor = '', int $limit = 50, array $orderings = []): object
+    public function search(string $queryExpression, string $formatType, array $fileTypes, int $directoryFilter = null, string $pageCursor = '', int $limit = 50, array $orderings = [], array $filters = []): object
     {
         $options = new \stdClass();
         $options->pageSize = $limit;
@@ -150,8 +150,6 @@ final class PixxioClient
         }
         $options->previewFileOptions = json_encode($this->imageOptions, JSON_THROW_ON_ERROR);
         $options->responseFields = json_encode(self::$fields, JSON_THROW_ON_ERROR);
-
-        $filters = [];
 
         if ($directoryFilter !== null) {
             $filters[] = ['filterType' => 'directory', 'directoryID' => $directoryFilter, 'includeSubdirectories' =>  true];
