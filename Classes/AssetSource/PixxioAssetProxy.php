@@ -44,6 +44,8 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
 
     private string $filename;
 
+    private ?int $directory = null;
+
     private \DateTime $lastModified;
 
     private int $fileSize;
@@ -51,6 +53,8 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
     private string $mediaType;
 
     private array $iptcProperties = [];
+
+   private array $customProperties = [];
 
     private UriInterface $thumbnailUri;
 
@@ -85,10 +89,26 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
         $assetProxy->fileSize = (int)$jsonObject->fileSize;
         $assetProxy->mediaType = $mediaType;
         $assetProxy->tags = $jsonObject->keywords ?? [];
+        $assetProxy->directory = $jsonObject->directory?->id ?? null;
 
         $assetProxy->iptcProperties['Title'] = $jsonObject->subject ?? '';
         $assetProxy->iptcProperties['CaptionAbstract'] = $jsonObject->description ?? '';
         $assetProxy->iptcProperties['CopyrightNotice'] = (string)self::extractMetadata($jsonObject->importantMetadata, 'iptc', 'CopyrightNotice');
+
+        // save all metadata fields in iptcProperties or customProperties
+        $metadataFields = get_object_vars($jsonObject->metadataFields) ?? null;
+        if ($metadataFields) {
+            foreach ($metadataFields as $metadata) {
+                switch ($metadata->type) {
+                    case 'iptc':
+                        $assetProxy->iptcProperties[$metadata->name] = $metadata->value;
+                        break;
+                    case 'custom':
+                        $assetProxy->customProperties[$metadata->name] = $metadata->value;
+                        break;
+                }
+            }
+        }
 
         $assetProxy->widthInPixels = $jsonObject->width ? (int)$jsonObject->width : null;
         $assetProxy->heightInPixels = $jsonObject->height ? (int)$jsonObject->height : null;
@@ -168,6 +188,21 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
         return $this->iptcProperties;
     }
 
+    public function getCustomProperties(): array
+    {
+        return $this->customProperties;
+    }
+
+    public function getCustomProperty(string $propertyName): string
+    {
+        return $this->customProperties[$propertyName] ?? '';
+    }
+
+    public function hasCustomProperty(string $propertyName): bool
+    {
+        return isset($this->customProperties[$propertyName]);
+    }
+
     public function getWidthInPixels(): ?int
     {
         return $this->widthInPixels;
@@ -186,6 +221,11 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
     public function getPreviewUri(): ?UriInterface
     {
         return $this->previewUri;
+    }
+
+    public function getDirectory(): ?int
+    {
+        return $this->directory;
     }
 
     /**
