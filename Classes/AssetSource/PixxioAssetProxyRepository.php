@@ -38,7 +38,7 @@ class PixxioAssetProxyRepository implements AssetProxyRepositoryInterface, Suppo
 
     private PixxioAssetSource $assetSource;
 
-    protected ?int $directoryFilter;
+    protected ?int $directoryFilter = null;
 
     private string $assetTypeFilter = 'All';
 
