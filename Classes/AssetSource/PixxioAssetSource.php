@@ -28,8 +28,9 @@ class PixxioAssetSource implements AssetSourceInterface
 
     /**
      * @Flow\Inject
+     * @var ResourceManager
      */
-    protected ResourceManager $resourceManager;
+    protected ?ResourceManager $resourceManager = null;
 
     /**
      * @Flow\InjectConfiguration(path="defaults", package="Flownative.Pixxio")
