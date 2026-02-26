@@ -44,11 +44,13 @@ final class PixxioAssetProxyQuery implements AssetProxyQueryInterface
 
     /**
      * @Inject
+      * @var LoggerInterface
      */
     protected LoggerInterface $logger;
 
     /**
      * @Inject
+     * @var ThrowableStorageInterface
      */
     protected ThrowableStorageInterface $throwableStorage;
 
