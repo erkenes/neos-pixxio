@@ -104,7 +104,10 @@ class PixxioAssetProxyRepository implements AssetProxyRepositoryInterface, Suppo
             $this->directoriesCache->set(self::CACHE_IDENTIFIER_DIRECTORIES_BY_PATH, $directories);
         }
 
-        $this->directoryFilter = $directories[$assetCollection->getTitle()]->id;
+        // set to -1 if the directory is not found ... that ensures an empty result set
+        $this->directoryFilter = array_key_exists($assetCollection->getTitle(),$directories)
+            ? $directories[$assetCollection->getTitle()]->id
+            : -1;
     }
 
     public function findAll(): AssetProxyQueryResultInterface
