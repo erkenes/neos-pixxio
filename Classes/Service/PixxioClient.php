@@ -149,7 +149,7 @@ final class PixxioClient
         $filters = [];
 
         if ($directoryFilter !== null) {
-            $filters[] = ['filterType' => 'directory', 'directoryID' => $directoryFilter];
+            $filters[] = ['filterType' => 'directory', 'directoryID' => $directoryFilter, 'includeSubdirectories' =>  true];
         }
         if ($formatType !== '') {
             $filters[] = ['filterType' => 'fileType', 'fileType' => $formatType];
