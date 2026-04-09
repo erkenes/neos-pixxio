@@ -147,7 +147,7 @@ final class PixxioClient
         $options->responseFields = json_encode(self::$fields, JSON_THROW_ON_ERROR);
 
         if ($directoryFilter !== null) {
-            $filters[] = ['filterType' => 'directory', 'directoryID' => $directoryFilter];
+            $filters[] = ['filterType' => 'directory', 'directoryID' => $directoryFilter, 'includeSubdirectories' =>  true];
         }
         if ($formatType !== '') {
             $filters[] = ['filterType' => 'fileType', 'fileType' => $formatType];
