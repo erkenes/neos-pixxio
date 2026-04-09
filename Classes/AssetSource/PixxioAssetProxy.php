@@ -60,6 +60,8 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
 
     private UriInterface $previewUri;
 
+    private UriInterface $originalFileUri;
+
     private ?int $widthInPixels;
 
     private ?int $heightInPixels;
@@ -112,6 +114,7 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
 
         $assetProxy->widthInPixels = $jsonObject->width ? (int)$jsonObject->width : null;
         $assetProxy->heightInPixels = $jsonObject->height ? (int)$jsonObject->height : null;
+        $assetProxy->originalFileUri = $jsonObject->originalFileURL ? new Uri($jsonObject->originalFileURL) : null;
 
         $modifiedPreviewFileURLs = $jsonObject->modifiedPreviewFileURLs;
         if (isset($modifiedPreviewFileURLs[0])) {
@@ -284,5 +287,10 @@ final class PixxioAssetProxy implements AssetProxyInterface, HasRemoteOriginalIn
     public function isImported(): bool
     {
         return true;
+    }
+
+    public function getOriginalFileUri(): ?UriInterface
+    {
+        return $this->originalFileUri;
     }
 }

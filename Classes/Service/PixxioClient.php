@@ -40,7 +40,7 @@ final class PixxioClient
      */
     private static array $fields = [
         'id', 'fileName', 'fileType', 'keywords', 'height', 'width', 'subject', 'description',
-        'modifyDate', 'fileSize', 'previewFileURL', 'modifiedPreviewFileURLs', 'importantMetadata', 'metadataFields', 'directory',
+        'modifyDate', 'fileSize', 'previewFileURL', 'modifiedPreviewFileURLs', 'importantMetadata', 'metadataFields', 'directory', 'originalFileURL',
     ];
 
     public function __construct(string $apiEndpointUri, string $apiKey, array $apiClientOptions, array $imageOptions)
